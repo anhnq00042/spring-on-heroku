@@ -1,21 +1,127 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.edison.study</groupId>
-  <artifactId>SpringOnHeroku</artifactId>
-  <packaging>war</packaging>
-  <version>1.0.0</version>
-  <name>SpringOnHeroku Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <finalName>SpringOnHeroku</finalName>
-  </build>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.edison.study</groupId>
+	<artifactId>SpringOnHeroku</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<name>SpringOnHeroku Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<spring.version>4.3.3.RELEASE</spring.version>
+		<jstl.version>1.2</jstl.version>
+		<junit.version>3.8.1</junit.version>
+		<!-- <logback.version>1.0.13</logback.version> -->
+		<jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!--Spring Framework -->
+		<!--Core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+
+			<!-- <exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+				</exclusion> </exclusions> -->
+		</dependency>
+
+		<!--Web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!--WebMVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!--/Spring Framework -->
+
+		<!--Logback -->
+		<!-- <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-classic</artifactId> 
+			<version>${logback.version}</version> </dependency> -->
+
+		<!--Commons-logging -->
+		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
+			<version>1.2</version> </dependency> -->
+
+	</dependencies>
+
+	<!--Cấu hình build ứng dụng -->
+	<build>
+		<finalName>SpringOnHeroku</finalName>
+		<plugins>
+			<!--Set JDK Complier Level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+
+			<!--For Maven Tomcat Plugin -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<path>/SpringOnHeroku</path>
+					<contextReloadable>true</contextReloadable>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!-- Webapp Runner -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>8.5.11.2</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
 </project>
